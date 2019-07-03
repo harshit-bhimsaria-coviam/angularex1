@@ -1,7 +1,12 @@
 <div>
-  <h1>{{reciepieList[getFoodId()].name}}</h1>
+  <h1>Food: {{reciepieList[getFoodId()].name}}</h1>
   <ul>
-    <li ng-repeat="x in reciepieList[getFoodId()].ingredients">{{ x }} <button ng-click="addToShoppingList(x)">+</button></li>
+    <li ng-repeat="x in reciepieList[getFoodId()].ingredients">
+      {{ x }}
+      <button ng-click="addToShoppingList(x)">+</button>
+      <button ng-if="inList(x) !== -1" ng-click="removeFromShoppingList(x)">-</button>
+    </li>
   </ul>
-  {{ShoppingList}}
+  <h1>Shopping List (Individual Items): {{shoppingListItemCount()}}</h1>
+  <h1>Shopping List (Total Qunatity of Items): {{shoppingListQuantityCount()}}</h1>
 </div>

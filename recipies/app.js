@@ -15,7 +15,6 @@ app.controller('homeController', function ($scope, ShoppingList) {
     { name: "Noodles", id: 3 }
   ];
   $scope.goToRecipe = function (x) {
-    console.log('#recipe/' + x)
     return '#/recipe/' + x;
   };
 });
@@ -31,22 +30,48 @@ app.controller('recipeController', function ($scope, $routeParams, ShoppingList)
   $scope.getFoodId = function () {
     return $routeParams.foodId;
   };
-  $scope.addToShoppingList = function(ingredient) {
+  $scope.inList = function(ingredient) {
     let inList = -1;
     $scope.ShoppingList.forEach((element, index) => {
       if(element.ingredientName === ingredient){
         inList = index;
       }
     });
-    if(inList === -1){
+    return inList;
+  };
+  $scope.addToShoppingList = function(ingredient) {
+    let itemIndex = $scope.inList(ingredient);
+    if(itemIndex === -1){
       let shoppingListItem = {};
       shoppingListItem['ingredientName'] = ingredient;
       shoppingListItem['quantity'] = 1;
       $scope.ShoppingList.push(shoppingListItem);
     }
-    else
-      $scope.ShoppingList[inList].quantity += 1;
+    else{
+      $scope.ShoppingList[itemIndex].quantity += 1;
+    }
   };
+  $scope.removeFromShoppingList = function(ingredient) {
+    let itemIndex = $scope.inList(ingredient);
+    if($scope.ShoppingList[itemIndex].quantity === 1)
+      $scope.ShoppingList.splice(itemIndex, 1);
+    else
+      $scope.ShoppingList[itemIndex].quantity -= 1;
+  };
+  $scope.shoppingListItemCount = function(){
+    return $scope.ShoppingList.length;
+  };
+  $scope.shoppingListQuantityCount = function(){
+    let sum = 0;
+    $scope.ShoppingList.forEach(ele=>{
+      sum += ele.quantity;
+    });
+    return sum;
+  };
+});
+
+app.controller('shoppingListController', function ($scope, ShoppingList) {
+  $scope.ShoppingList = ShoppingList.shoppingList;
 });
 
 app.config(['$locationProvider', function ($locationProvider) {
@@ -64,6 +89,11 @@ app.config(['$routeProvider', function ($routeProvider) {
     .when('/recipe/:foodId', {
       templateUrl: 'views/recipeView.htm',
       controller: 'recipeController'
+    })
+
+    .when('/ShoppingList', {
+      templateUrl: 'views/shoppingListView.htm',
+      controller: 'shoppingListController'
     })
 
     .otherwise({
