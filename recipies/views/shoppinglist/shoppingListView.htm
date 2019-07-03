@@ -1,10 +1,24 @@
 <div>
   <h1>Shopping List</h1>
-  <ul>
+  <ul ng-if="!editStatus">
     <li ng-repeat="x in ShoppingList">
       Name: {{ x.ingredientName }}, Quantity: {{ x.quantity }}
       <button ng-click="addToShoppingList(x.ingredientName)">+</button>
       <button ng-if="inList(x.ingredientName) !== -1" ng-click="removeFromShoppingList(x.ingredientName)">-</button>
+      <button ng-click="deleteFromShoppingList(x.ingredientName)">Delete</button>
     </li>
   </ul>
+
+  <ul ng-if="editStatus">
+    <li ng-repeat="x in ShoppingList">
+      Name: <select name="ingredientName" id="ingredientName" ng-model="x.ingredientName">
+        <option ng-repeat="y in ingredientList" value="{{ y }}">{{ y }}</option>
+      </select>,
+      Quantity: <input type="number" name="quantity" id="quantity" ng-model="x.quantity">
+      <button ng-click="deleteFromShoppingList(x.ingredientName)">Delete</button>
+    </li>
+  </ul>
+
+  <button ng-if="!editStatus && ShoppingList.length" ng-click="changeEditStatus()">Edit List</button>
+  <button ng-if="editStatus && ShoppingList.length" ng-click="saveChanges()">Save List</button>
 </div>
