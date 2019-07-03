@@ -1,7 +1,8 @@
 <div>
-    <h1>Recipies</h1>
-    <ul>
-        <li ng-repeat="x in foodList">{{ x.name }}</li>
-    </ul>
-    <div ng-if="recipieView"></div>
+  <h1>Recipies</h1>
+  <ul>
+    <li ng-repeat="x in foodList">
+      <a ng-href="{{goToRecipe(x.id)}}">{{ x.name }}</a>
+    </li>
+  </ul>
 </div>

@@ -1,0 +1,7 @@
+<div>
+  <h1>{{reciepieList[getFoodId()].name}}</h1>
+  <ul>
+    <li ng-repeat="x in reciepieList[getFoodId()].ingredients">{{ x }} <button ng-click="addToShoppingList(x)">+</button></li>
+  </ul>
+  {{ShoppingList}}
+</div>
