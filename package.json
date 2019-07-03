@@ -1,0 +1,10 @@
+{
+    "name": "recipies",
+    "version": "0.0.1",
+    "description": "Example application",
+    "main": "server.js",
+    "author": "Harshit",
+    "dependencies": {
+        "express": "*"
+    }
+}
