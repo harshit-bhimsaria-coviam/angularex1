@@ -8,17 +8,12 @@
 
   <title>Recipies</title>
   <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-route/angular-route.js"></script>
   <script src="app.js"></script>
 </head>
 
 <body>
-  <div ng-controller="myCtrl">
-    <h1>Recipies</h1>
-    <ul>
-      <li ng-repeat="x in foodList">{{ x.name }}</li>
-    </ul>
-    <div ng-if="recipieView"></div>
-  </div>
+  <div ng-view></div>
 </body>
 
 </html>
