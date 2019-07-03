@@ -2,7 +2,45 @@ var app = angular.module('myApp', ['ngRoute']);
 
 app.factory('ShoppingList', function(){
   return {
-    shoppingList: []
+    shoppingList: [],
+    inList: function(ingredient) {
+      let inList = -1;
+      this.ShoppingList.forEach((element, index) => {
+        if(element.ingredientName === ingredient){
+          inList = index;
+        }
+      });
+      return inList;
+    },
+    addToShoppingList: function(ingredient) {
+      let itemIndex = this.inList(ingredient);
+      if(itemIndex === -1){
+        let shoppingListItem = {};
+        shoppingListItem['ingredientName'] = ingredient;
+        shoppingListItem['quantity'] = 1;
+        this.ShoppingList.push(shoppingListItem);
+      }
+      else{
+        this.ShoppingList[itemIndex].quantity += 1;
+      }
+    },
+    removeFromShoppingList: function(ingredient) {
+      let itemIndex = this.inList(ingredient);
+      if(this.ShoppingList[itemIndex].quantity === 1)
+        this.ShoppingList.splice(itemIndex, 1);
+      else
+        this.ShoppingList[itemIndex].quantity -= 1;
+    },
+    shoppingListItemCount: function(){
+      return this.ShoppingList.length;
+    },
+    shoppingListQuantityCount: function(){
+      let sum = 0;
+      this.ShoppingList.forEach(ele=>{
+        sum += ele.quantity;
+      });
+      return sum;
+    }
   };
 });
 
@@ -30,48 +68,20 @@ app.controller('recipeController', function ($scope, $routeParams, ShoppingList)
   $scope.getFoodId = function () {
     return $routeParams.foodId;
   };
-  $scope.inList = function(ingredient) {
-    let inList = -1;
-    $scope.ShoppingList.forEach((element, index) => {
-      if(element.ingredientName === ingredient){
-        inList = index;
-      }
-    });
-    return inList;
-  };
-  $scope.addToShoppingList = function(ingredient) {
-    let itemIndex = $scope.inList(ingredient);
-    if(itemIndex === -1){
-      let shoppingListItem = {};
-      shoppingListItem['ingredientName'] = ingredient;
-      shoppingListItem['quantity'] = 1;
-      $scope.ShoppingList.push(shoppingListItem);
-    }
-    else{
-      $scope.ShoppingList[itemIndex].quantity += 1;
-    }
-  };
-  $scope.removeFromShoppingList = function(ingredient) {
-    let itemIndex = $scope.inList(ingredient);
-    if($scope.ShoppingList[itemIndex].quantity === 1)
-      $scope.ShoppingList.splice(itemIndex, 1);
-    else
-      $scope.ShoppingList[itemIndex].quantity -= 1;
-  };
-  $scope.shoppingListItemCount = function(){
-    return $scope.ShoppingList.length;
-  };
-  $scope.shoppingListQuantityCount = function(){
-    let sum = 0;
-    $scope.ShoppingList.forEach(ele=>{
-      sum += ele.quantity;
-    });
-    return sum;
-  };
+  $scope.inList = ShoppingList.inList;
+  $scope.addToShoppingList = ShoppingList.addToShoppingList;
+  $scope.removeFromShoppingList =  ShoppingList.removeFromShoppingList;
+  $scope.shoppingListItemCount = ShoppingList.shoppingListItemCount;
+  $scope.shoppingListQuantityCount = ShoppingList.shoppingListQuantityCount;
 });
 
 app.controller('shoppingListController', function ($scope, ShoppingList) {
   $scope.ShoppingList = ShoppingList.shoppingList;
+  $scope.inList = ShoppingList.inList;
+  $scope.addToShoppingList = ShoppingList.addToShoppingList;
+  $scope.removeFromShoppingList =  ShoppingList.removeFromShoppingList;
+  $scope.shoppingListItemCount = ShoppingList.shoppingListItemCount;
+  $scope.shoppingListQuantityCount = ShoppingList.shoppingListQuantityCount;
 });
 
 app.config(['$locationProvider', function ($locationProvider) {

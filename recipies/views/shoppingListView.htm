@@ -1,6 +1,10 @@
 <div>
-    <h1>Shopping List</h1>
-    <ul>
-        <li ng-repeat="x in ShoppingList">Name: {{ x.ingredientName }}, Quantity: {{ x.quantity }}</li>
-    </ul>
+  <h1>Shopping List</h1>
+  <ul>
+    <li ng-repeat="x in ShoppingList">
+      Name: {{ x.ingredientName }}, Quantity: {{ x.quantity }}
+      <button ng-click="addToShoppingList(x.ingredientName)">+</button>
+      <button ng-if="inList(x.ingredientName) !== -1" ng-click="removeFromShoppingList(x.ingredientName)">-</button>
+    </li>
+  </ul>
 </div>
